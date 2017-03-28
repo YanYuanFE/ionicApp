@@ -3,15 +3,18 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { DevicePage } from '../device/device';
-import { BLE } from 'ionic-native';
+import { BLE } from '@ionic-native/ble';
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
 })
 export class AboutPage {
+  private devices;
+  private isScanning = false;
 
   constructor(public navCtrl: NavController) {
+    this.navCtrl = NavController;
     this.devices = [];
     this.isScanning = false;
 
@@ -21,6 +24,7 @@ export class AboutPage {
     console.log("Scaning Started");
     this.devices = [];
     this.isScanning = true;
+    BLE.enable();
     BLE.startScan([]).subscrible(device => {
       this.devices.push(device);
     });
